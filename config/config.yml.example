@@ -1,0 +1,12 @@
+http:
+  port: '8080'
+
+clickhouse:
+  database: 'default'
+  username: 'default'
+  password: 'default'
+  host: 'clickhouse'
+  port: 8123
+
+logger:
+  log_level: 'debug'

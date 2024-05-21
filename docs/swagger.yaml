@@ -1,0 +1,78 @@
+definitions:
+  entity.Event:
+    properties:
+      EventTime:
+        example: "2023-04-09 13:00:00"
+        type: string
+      Payload:
+        example: '{"some_field":"some_value"}'
+        type: string
+      UserID:
+        example: 1
+        type: integer
+      eventID:
+        example: 1
+        type: integer
+      eventType:
+        example: login
+        type: string
+    type: object
+  http.errorResponse:
+    properties:
+      error:
+        example: message
+        type: string
+    type: object
+  http.successResponse:
+    properties:
+      status:
+        example: ok
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API Service for Test Go ClickHouse Middle
+  title: Test Go ClickHouse Middle
+  version: "1.0"
+paths:
+  /api/event:
+    post:
+      consumes:
+      - application/json
+      description: insert event
+      operationId: create-event
+      parameters:
+      - description: event info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.successResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/http.errorResponse'
+      summary: Insert Event
+      tags:
+      - event
+swagger: "2.0"

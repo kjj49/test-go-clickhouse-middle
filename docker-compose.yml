@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  clickhouse:
+    container_name: clickhouse
+    image: yandex/clickhouse-server:latest
+    volumes:
+      - ./clickhouse:/var/lib/clickhouse
+    ports:
+      - '8123:8123'
+      - '9000:9000'
+  migrations:
+    image: ghcr.io/kukymbr/goose-docker:3.20.0
+    environment:
+      - GOOSE_DRIVER=clickhouse
+      - GOOSE_MIGRATION_DIR=./migrations
+      - GOOSE_DBSTRING=http://clickhouse:8123
+    volumes:
+      - ./migrations:/migrations
+
+  app:
+    restart: always
+    build: .
+    container_name: app
+    image: app
+    environment:
+      CLICKHOUSE_URL: 'http://clickhouse:8123'
+    ports:
+      - 8080:8080
+    depends_on:
+      - clickhouse
