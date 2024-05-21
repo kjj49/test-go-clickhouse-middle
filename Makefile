@@ -1,5 +1,6 @@
 require: ### download requirements
 	go mod download
+.PHONY: require
 
 run: ### run application
 	go run cmd/app/main.go
